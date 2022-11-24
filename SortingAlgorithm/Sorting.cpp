@@ -101,7 +101,7 @@ void selection_sort(int *a,int length){
     }
 }
 
-int* counting_sort(int *a,int length){
+void counting_sort(int a[],int length){
     int max=a[0];
     int *b = new int[length];
 
@@ -111,27 +111,65 @@ int* counting_sort(int *a,int length){
         }
     }
 
-    int *countArray = (int*)calloc(max+1,sizeof(int));
-    int *indexArray = (int*)calloc(max+1,sizeof(int));
+    int countArray[max+1] = {};
+    int indexArray[max+1] = {};
 
     for(int i=0;i<length;i++){
         countArray[a[i]]+=1;
     }
 
-    for(int i=0;i<max+1;i++)cout<<countArray[i]<<" ";
-    cout<<endl;
+    // for(int i=0;i<max+1;i++)cout<<countArray[i]<<" ";
+    // cout<<endl;
 
     for(int i=0;i<max+1;i++){
         indexArray[i] = (i==0?-1:indexArray[i-1])+countArray[i];
     }
 
-    for(int i=0;i<max+1;i++)cout<<indexArray[i]<<" ";
-    cout<<endl;
+    // for(int i=0;i<max+1;i++)cout<<indexArray[i]<<" ";
+    // cout<<endl;
 
     for(int i=length-1;i>=0;i--){
         b[indexArray[a[i]]] = a[i];
         indexArray[a[i]]--;
     }
+    for(int i=0;i<length;i++){
+        a[i] = b[i];
+    }
+}
 
-    return b;
+void countingSort(int a[], int n, int place)
+{
+    int output[n];
+    int count[10] = { 0 };
+ 
+    for(int i = 0; i < n; i++){
+        count[(a[i] / place) % 10]++;
+    }
+
+    for(int i = 1; i < 10; i++){
+        count[i] += count[i - 1];
+    }
+
+    for(int i = n - 1; i >= 0; i--) {
+        output[count[(a[i] / place) % 10] - 1] = a[i];
+        count[(a[i] / place) % 10]--;
+    }
+
+    for(int i = 0; i < n; i++){
+        a[i] = output[i];
+    }
+}
+
+void radix_sort(int a[],int length){
+    int max = a[0];
+
+    for(int i=1;i<length;i++){
+        if(a[i]>max){
+            max = a[i];
+        }
+    }
+
+    for(int i = 1; max/i > 0;i*=10){
+        countingSort(a,length,i);
+    }
 }
