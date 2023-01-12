@@ -1,7 +1,13 @@
 #include <iostream>
 using namespace std;
 
-void insertion_sort(int *arr, int length){
+void swap(int *a,int *b){
+    int temp = *b;
+    *b = *a;
+    *a = temp;
+}
+
+void insertion_sort(int arr[], int length){
     for (int i = 1; i < length ; i++)
     {
         int key = arr[i];
@@ -16,9 +22,10 @@ void insertion_sort(int *arr, int length){
     }
 }
 
-void quick_sort(int *a,int s,int e){
+void quick_sort(int a[],int s,int e){
     if(s==e) return;
 
+    // int index = (e-s)/2;
     int key = a[s];
     int up = s+1;
     int down = e;
@@ -37,6 +44,11 @@ void quick_sort(int *a,int s,int e){
             a[up]=temp;
         }
     }
+    cout<<"->";
+    for(int n=s;n<=e;n++){
+        cout<<a[n]<<" ";
+    }
+    cout<<endl;
 
     int p = a[down];
     a[down] = key;
@@ -46,7 +58,7 @@ void quick_sort(int *a,int s,int e){
     if(e!=down)quick_sort(a,down+1,e);
 }
 
-void merge(int *a,int s,int m,int e){
+void merge(int a[],int s,int m,int e){
     int indexOfX=0;
     int indexOfY=0;
     int sizeOfX =  m-s+1;
@@ -75,6 +87,9 @@ void merge(int *a,int s,int m,int e){
     while(indexOfY<sizeOfY){
         a[n++] = y[indexOfY++];
     }
+
+    delete[] x;
+    delete[] y;
 }
 
 void merge_sort(int *a,int s,int e){
@@ -173,3 +188,50 @@ void radix_sort(int a[],int length){
         countingSort(a,length,i);
     }
 }
+
+void bubble_sort(int a[],int length){
+    
+    for(int i=0;i<length;i++){
+        
+        for(int j=0;j<length-i-1;j++){
+            if(a[j]>a[j+1]){
+                int temp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = temp;
+            }
+        }
+    }
+}
+
+void heapify(int a[],int n,int i){
+    
+    int largest = i;
+    int l = 2*i+1;
+    int r = 2*i+2;
+    if(l<n && a[l]>a[largest])
+        largest = l;
+
+    if(r<n && a[r]>a[largest])
+        largest = r;
+    
+    if(largest!=i){
+        swap(&a[i],&a[largest]);
+        heapify(a,n,largest);
+    }
+}
+
+void heap_sort(int a[],int lenght){
+    for(int i=lenght/2 - 1;i>=0;i--){
+        heapify(a,lenght,i);
+    }
+
+    for(int i=lenght-1;i>0;i--){
+        swap(&a[0],&a[i]);
+        heapify(a,i,0);
+    }
+}
+
+
+
+
+
